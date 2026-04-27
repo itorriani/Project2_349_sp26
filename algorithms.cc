@@ -45,14 +45,14 @@ int find_missing_linear(const std::vector<int>& A) {
         int diff = A[i+1]-A[i];
 
         // TODO: return the missing value between those two elements
-        if (diff != 1) { return A[i] + 1; }
+        if (diff > 1) { return A[i] + 1; }
     }
 
     return -1; // return -1 if no such missing consecutive value is found. 
     
 }
 
-// -----------------------------------------------------------------------------
+// ------------------------------- ----------------------------------------------
 // Part 2 helper: binary-search-based search on a distinct subarray
 //
 // Pseudocode idea:
@@ -62,11 +62,48 @@ int find_missing_linear(const std::vector<int>& A) {
 // 4. If it does, continue searching in the right half.
 // 5. Otherwise, continue searching in the left half.
 // 6. When only one position remains, determine the missing value from that spot.
+
+int findMissingSubarray(const std::vector<int>& A, int n)
+{
+    //define left and right boundaries
+    int left = 0; 
+
+    int right = n-1; 
+    
+    while (left < right)
+    {
+         
+        int mid = left + (right - left) / 2; // calculate midpoint
+        
+        //Use the property that A[0]+mid will always be an certain value assuming
+        //the array is perfectely sorted. Use it to identify
+        //which side has the missing value. 
+        if (A[mid] == A[0] + mid) { 
+
+            left = mid + 1; // if pattern is still correct, missing value is on the right
+
+        } else {
+
+            right = mid; //otherwise, pattern is missing on the left side
+        }
+    
+    }
+
+    return A[0] + left;
+
+
+}
+
+
 // -----------------------------------------------------------------------------
 int binary_missing_distinct(const std::vector<int>& A, int left, int right) {
     // TODO: prepare any information needed to tell whether the pattern is still correct
 
+    int res = -1; 
+
     // TODO: repeat while more than one position remains
+
+    w
 
     // TODO: compute the middle position
 
