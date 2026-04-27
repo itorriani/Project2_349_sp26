@@ -39,10 +39,17 @@ bool all_distinct(const std::vector<int>& A, int left, int right) {
 // -----------------------------------------------------------------------------
 int find_missing_linear(const std::vector<int>& A) {
     // TODO: examine each adjacent pair of values
+    for (int i = 0; i+1 < A.size(); i++)
+    {
+        // TODO: detect where the sorted consecutive pattern breaks
+        int diff = A[i+1]-A[i];
 
-    // TODO: detect where the sorted consecutive pattern breaks
+        // TODO: return the missing value between those two elements
+        if (diff != 1) { return A[i] + 1; }
+    }
 
-    // TODO: return the missing value between those two elements
+    return -1; // return -1 if no such missing consecutive value is found. 
+    
 }
 
 // -----------------------------------------------------------------------------
