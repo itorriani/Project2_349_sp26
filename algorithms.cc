@@ -89,6 +89,8 @@ int findMissingSubarray(const std::vector<int>& A, int n)
     
     }
 
+    //When left is no longer smaller than right, by properties,
+    //it ends up at the location of the missing value.
     return A[0] + left;
 
 
@@ -99,11 +101,7 @@ int findMissingSubarray(const std::vector<int>& A, int n)
 int binary_missing_distinct(const std::vector<int>& A, int left, int right) {
     // TODO: prepare any information needed to tell whether the pattern is still correct
 
-    int res = -1; 
-
     // TODO: repeat while more than one position remains
-
-    w
 
     // TODO: compute the middle position
 
@@ -112,6 +110,20 @@ int binary_missing_distinct(const std::vector<int>& A, int left, int right) {
     // TODO: keep only the half that could still contain the missing value
 
     // TODO: return the missing value once the search range is narrowed down
+
+    while (left < right)
+    {
+        int mid = left + (right - left) / 2; //compute midpoint
+
+        if (A[mid] == A[0] + mid) { 
+
+            left = mid + 1; // if pattern is still correct, missing value is on the right
+
+        } else {
+
+            right = mid; //otherwise, pattern is missing on the left side
+        }
+    }
 }
 
 // -----------------------------------------------------------------------------
