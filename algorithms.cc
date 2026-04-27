@@ -12,11 +12,20 @@
 bool all_distinct(const std::vector<int>& A, int left, int right) {
     // TODO: move through the subarray from left to right
 
-    // TODO: compare each value to the previous one
+    int curr = left+1; // set curr to left+1
 
-    // TODO: return false if a duplicate is found
+    for (int i = left; i <= right; i++)
+    {
+        // TODO: compare each value to the previous one
+        if (A[curr] == A[curr-1])
+        { 
+            // TODO: return false if a duplicate is found
+            return false; 
+        }
 
+    }    
     // TODO: return true if no duplicates are found
+    return true; 
 }
 
 // -----------------------------------------------------------------------------
