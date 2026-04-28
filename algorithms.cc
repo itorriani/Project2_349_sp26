@@ -12,12 +12,11 @@
 bool all_distinct(const std::vector<int>& A, int left, int right) {
     // TODO: move through the subarray from left to right
 
-    int curr = left+1; // set curr to left+1
 
-    for (int i = left; i <= right; i++)
+    for (int i = left+1; i <= right; i++)
     {
         // TODO: compare each value to the previous one
-        if (A[curr] == A[curr-1])
+        if (A[i] == A[i-1])
         { 
             // TODO: return false if a duplicate is found
             return false; 
@@ -79,11 +78,13 @@ int binary_missing_distinct(const std::vector<int>& A, int left, int right) {
 
     // TODO: return the missing value once the search range is narrowed down
 
+    int base = A[left] - left;
+    
     while (left < right)
     {
         int mid = left + (right - left) / 2; //compute midpoint
 
-        int base = A[left] - left;
+
 
         if (A[mid] == base + mid) { 
 
