@@ -83,7 +83,9 @@ int binary_missing_distinct(const std::vector<int>& A, int left, int right) {
     {
         int mid = left + (right - left) / 2; //compute midpoint
 
-        if (A[mid] == A[0] + mid) { 
+        int base = A[left] - left;
+
+        if (A[mid] == base + mid) { 
 
             left = mid + 1; // if pattern is still correct, missing value is on the right
 
@@ -112,23 +114,38 @@ int binary_missing_distinct(const std::vector<int>& A, int left, int right) {
 int general_missing_recursive(const std::vector<int>& A, int left, int right) {
 
     // TODO: handle an empty or invalid subproblem
-    if (left > right) { return -1; }
+    if (left >= right) { return -1; }
 
     // TODO: handle a very small subproblem directly
-    if (right - left <= 1) { return A[left] + 1; }
+    if (right - left == 1) {
+        if (A[right] - A[left] > 1) {
+            return A[left] + 1;
+        }
+        return -1;
+    }
+
+    // TODO: switch to the binary-search-based method if this portion is distinct
+    if (all_distinct(A, left, right)) {
+        return binary_missing_distinct(A, left, right);
+    }
 
     // TODO: split the current portion around the middle
     int mid = (left + right) / 2;
 
-    // TODO: check whether the missing value lies between the two halves
-    if (A[mid + 1] != A[mid] + 1) { return A[mid] + 1; } 
-
     // TODO: recursively search the left half
-    if ((A[left] - left) != (A[mid] - mid))
-        return general_missing_recursive(A, left, mid);
+    int left_result = general_missing_recursive(A, left, mid);
+
+    if (left_result != -1) {
+        return left_result;
+    }
+
+    // TODO: check whether the missing value lies between the two halves
+    if (A[mid + 1] - A[mid] > 1) {
+        return A[mid] + 1;
+    }
 
     // TODO: recursively search the right half if necessary
-    return general_missing_recursive(A, mid, right);
+    return general_missing_recursive(A, mid + 1, right);
 }
 
 // -----------------------------------------------------------------------------
@@ -162,9 +179,13 @@ int find_missing_general(const std::vector<int>& A) {
 // 3. Otherwise, use the general divide-and-conquer algorithm.
 // -----------------------------------------------------------------------------
 int find_missing_element(const std::vector<int>& A) {
-    // TODO: decide whether the full sequence is distinct
-
-    // TODO: use the distinct-elements algorithm when it is safe
-
-    // TODO: otherwise use the general divide-and-conquer algorithm
+    
+     // TODO: use the distinct-elements algorithm when it is safe
+    if (all_distinct(A, 0, A.size() - 1)) {
+           
+        return find_missing_distinct(A);
+        // TODO: otherwise use the general divide-and-conquer algorithm
+    } else {
+        return find_missing_general(A);
+    }
 }
