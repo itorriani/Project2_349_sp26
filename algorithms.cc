@@ -63,38 +63,6 @@ int find_missing_linear(const std::vector<int>& A) {
 // 5. Otherwise, continue searching in the left half.
 // 6. When only one position remains, determine the missing value from that spot.
 
-int findMissingSubarray(const std::vector<int>& A, int n)
-{
-    //define left and right boundaries
-    int left = 0; 
-
-    int right = n-1; 
-    
-    while (left < right)
-    {
-         
-        int mid = left + (right - left) / 2; // calculate midpoint
-        
-        //Use the property that A[0]+mid will always be an certain value assuming
-        //the array is perfectely sorted. Use it to identify
-        //which side has the missing value. 
-        if (A[mid] == A[0] + mid) { 
-
-            left = mid + 1; // if pattern is still correct, missing value is on the right
-
-        } else {
-
-            right = mid; //otherwise, pattern is missing on the left side
-        }
-    
-    }
-
-    //When left is no longer smaller than right, by properties,
-    //it ends up at the location of the missing value.
-    return A[0] + left;
-
-
-}
 
 
 // -----------------------------------------------------------------------------
@@ -124,6 +92,9 @@ int binary_missing_distinct(const std::vector<int>& A, int left, int right) {
             right = mid; //otherwise, pattern is missing on the left side
         }
     }
+
+    return A[0] + left;
+
 }
 
 // -----------------------------------------------------------------------------
@@ -139,19 +110,25 @@ int binary_missing_distinct(const std::vector<int>& A, int left, int right) {
 // 6. If needed, recursively search the right part.
 // -----------------------------------------------------------------------------
 int general_missing_recursive(const std::vector<int>& A, int left, int right) {
+
     // TODO: handle an empty or invalid subproblem
+    if (left > right) { return -1; }
 
     // TODO: handle a very small subproblem directly
-
-    // TODO: switch to the binary-search-based method if this portion is distinct
+    if (right - left <= 1) { return A[left] + 1; }
 
     // TODO: split the current portion around the middle
-
-    // TODO: recursively search the left half
+    int mid = (left + right) / 2;
 
     // TODO: check whether the missing value lies between the two halves
+    if (A[mid + 1] != A[mid] + 1) { return A[mid] + 1; } 
+
+    // TODO: recursively search the left half
+    if ((A[left] - left) != (A[mid] - mid))
+        return general_missing_recursive(A, left, mid);
 
     // TODO: recursively search the right half if necessary
+    return general_missing_recursive(A, mid, right);
 }
 
 // -----------------------------------------------------------------------------
@@ -162,6 +139,7 @@ int general_missing_recursive(const std::vector<int>& A, int left, int right) {
 // -----------------------------------------------------------------------------
 int find_missing_distinct(const std::vector<int>& A) {
     // TODO: call the binary-search-based helper on the full array
+    return binary_missing_distinct(A, 0, A.size() - 1); 
 }
 
 // -----------------------------------------------------------------------------
@@ -172,6 +150,7 @@ int find_missing_distinct(const std::vector<int>& A) {
 // -----------------------------------------------------------------------------
 int find_missing_general(const std::vector<int>& A) {
     // TODO: call the general recursive helper on the full array
+    return general_missing_recursive(A, 0, A.size() - 1);
 }
 
 // -----------------------------------------------------------------------------
